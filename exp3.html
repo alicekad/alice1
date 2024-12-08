@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Strength Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        input {
+            width: 300px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        #strength {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .weak {
+            color: red;
+        }
+        .medium {
+            color: orange;
+        }
+        .strong {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>Password Strength Checker</h1>
+    <input type="password" id="password" placeholder="Enter your password" oninput="checkStrength()">
+    <div id="strength">Password strength will appear here</div>
+
+    <script>
+        function checkStrength() {
+            const password = document.getElementById('password').value;
+            const strengthElement = document.getElementById('strength');
+            const weakPattern = /.{6,}/;
+            const mediumPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+            const strongPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{10,}$/;
+
+            if (!password) {
+                strengthElement.textContent = 'Password strength will appear here';
+                strengthElement.className = '';
+            } else if (strongPattern.test(password)) {
+                strengthElement.textContent = 'Strong';
+                strengthElement.className = 'strong';
+            } else if (mediumPattern.test(password)) {
+                strengthElement.textContent = 'Medium';
+                strengthElement.className = 'medium';
+            } else if (weakPattern.test(password)) {
+                strengthElement.textContent = 'Weak';
+                strengthElement.className = 'weak';
+            } else {
+                strengthElement.textContent = 'Too Weak';
+                strengthElement.className = 'weak';
+            }
+        }
+    </script>
+</body>
+</html>

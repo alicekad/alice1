@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .candidate {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .candidate button {
+            padding: 5px 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .candidate button:hover {
+            background-color: #218838;
+        }
+        #results {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Voting Application</h1>
+    <div id="voting-area">
+        <div class="candidate">
+            <span>Candidate A</span>
+            <button onclick="vote('Candidate A')">Vote</button>
+        </div>
+        <div class="candidate">
+            <span>Candidate B</span>
+            <button onclick="vote('Candidate B')">Vote</button>
+        </div>
+        <div class="candidate">
+            <span>Candidate C</span>
+            <button onclick="vote('Candidate C')">Vote</button>
+        </div>
+    </div>
+    <div id="results">
+        <h2>Results:</h2>
+        <p id="candidateA">Candidate A: 0 votes</p>
+        <p id="candidateB">Candidate B: 0 votes</p>
+        <p id="candidateC">Candidate C: 0 votes</p>
+    </div>
+
+    <script>
+        const votes = {
+            "Candidate A": 0,
+            "Candidate B": 0,
+            "Candidate C": 0
+        };
+
+        function vote(candidate) {
+            votes[candidate]++;
+            document.getElementById('candidateA').textContent = `Candidate A: ${votes["Candidate A"]} votes`;
+            document.getElementById('candidateB').textContent = `Candidate B: ${votes["Candidate B"]} votes`;
+            document.getElementById('candidateC').textContent = `Candidate C: ${votes["Candidate C"]} votes`;
+        }
+    </script>
+</body>
+</html>

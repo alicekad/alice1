@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grocery Delivery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .product {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .cart {
+            margin-top: 20px;
+        }
+        button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #order-summary {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Grocery Delivery Application</h1>
+
+    <div id="product-list">
+        <div class="product">
+            <span>Apples (1kg) - $3</span>
+            <button onclick="addToCart('Apples', 3)">Add to Cart</button>
+        </div>
+        <div class="product">
+            <span>Bananas (1kg) - $2</span>
+            <button onclick="addToCart('Bananas', 2)">Add to Cart</button>
+        </div>
+        <div class="product">
+            <span>Carrots (1kg) - $4</span>
+            <button onclick="addToCart('Carrots', 4)">Add to Cart</button>
+        </div>
+        <div class="product">
+            <span>Tomatoes (1kg) - $3</span>
+            <button onclick="addToCart('Tomatoes', 3)">Add to Cart</button>
+        </div>
+    </div>
+
+    <div class="cart">
+        <h2>Your Cart</h2>
+        <ul id="cart-items"></ul>
+        <p><strong>Total: $<span id="total">0</span></strong></p>
+        <button onclick="checkout()">Checkout</button>
+    </div>
+
+    <div id="order-summary"></div>
+
+    <script>
+        const cart = [];
+        let total = 0;
+
+        function addToCart(item, price) {
+            cart.push({ item, price });
+            total += price;
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cart-items');
+            cartItems.innerHTML = '';
+            cart.forEach((entry, index) => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${entry.item} - $${entry.price}`;
+                const removeButton = document.createElement('button');
+                removeButton.textContent = 'Remove';
+                removeButton.style.marginLeft = '10px';
+                removeButton.onclick = () => removeFromCart(index);
+                listItem.appendChild(removeButton);
+                cartItems.appendChild(listItem);
+            });
+            document.getElementById('total').textContent = total;
+        }
+
+        function removeFromCart(index) {
+            total -= cart[index].price;
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            const orderSummary = document.getElementById('order-summary');
+            orderSummary.innerHTML = `
+                <h2>Order Summary</h2>
+                <ul>${cart.map(item => `<li>${item.item} - $${item.price}</li>`).join('')}</ul>
+                <p><strong>Total: $${total}</strong></p>
+                <p>Thank you for your order!</p>
+            `;
+            cart.length = 0;
+            total = 0;
+            updateCart();
+        }
+    </script>
+</body>
+</html>

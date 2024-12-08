@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Module</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #chat-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 300px;
+            overflow-y: scroll;
+            margin-bottom: 10px;
+        }
+        #message-input {
+            display: flex;
+            justify-content: space-between;
+        }
+        input {
+            width: 80%;
+            padding: 10px;
+        }
+        button {
+            width: 18%;
+            padding: 10px;
+            background-color: #fc0c98;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .message {
+            margin: 5px 0;
+        }
+        .user {
+            color: blue;
+        }
+        .bot {
+            color: rgb(8, 7, 6);
+        }
+    </style>
+</head>
+<body>
+    <h1>Chat Module</h1>
+    <div id="chat-box"></div>
+    <div id="message-input">
+        <input type="text" id="message" placeholder="Type a message">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        const chatBox = document.getElementById('chat-box');
+
+        function sendMessage() {
+            const message = document.getElementById('message').value.trim();
+            if (!message) return;
+            appendMessage(`You: ${message}`, 'user');
+            const reply = getBotReply(message);
+            setTimeout(() => {
+                appendMessage(`Bot: ${reply}`, 'bot');
+            }, 500);
+
+            document.getElementById('message').value = '';
+        }
+
+        function appendMessage(text, sender) {
+            const msg = document.createElement('div');
+            msg.className = `message ${sender}`;
+            msg.textContent = text;
+            chatBox.appendChild(msg);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function getBotReply(userMessage) {
+            const responses = {
+                hello: "Hi! How can I help you today?",
+                "how are you": "I'm just a bot, but I'm doing great! How about you?",
+                bye: "Goodbye! Have a great day!",
+                default: "I'm sorry, I don't understand that. Can you rephrase?"
+            };
+
+            const lowerCaseMessage = userMessage.toLowerCase();
+            return responses[lowerCaseMessage] || responses.default;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Catalog Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 10px;
+        }
+        .form-group input, .form-group button {
+            padding: 10px;
+            margin: 5px 0;
+            width: 100%;
+        }
+        #product-list {
+            margin-top: 20px;
+        }
+        .product {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f9f9f9;
+        }
+        .product button {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .product button:hover {
+            background-color: #e60000;
+        }
+    </style>
+</head>
+<body>
+    <h1>Product Catalog Management</h1>
+    <div>
+        <h2>Add Product</h2>
+        <div class="form-group">
+            <input type="text" id="product-name" placeholder="Product Name">
+        </div>
+        <div class="form-group">
+            <input type="number" id="product-price" placeholder="Product Price">
+        </div>
+        <div class="form-group">
+            <button onclick="addProduct()">Add Product</button>
+        </div>
+    </div>
+    <div id="product-list">
+        <h2>Product Catalog</h2>
+    </div>
+
+    <script>
+        const productList = [];
+
+        function addProduct() {
+            const name = document.getElementById('product-name').value.trim();
+            const price = document.getElementById('product-price').value.trim();
+
+            if (!name || !price || isNaN(price)) {
+                alert("Please enter a valid product name and price.");
+                return;
+            }
+
+            const product = { name, price: parseFloat(price).toFixed(2) };
+            productList.push(product);
+            updateProductList();
+            document.getElementById('product-name').value = '';
+            document.getElementById('product-price').value = '';
+        }
+
+        function removeProduct(index) {
+            productList.splice(index, 1);
+            updateProductList();
+        }
+
+        function updateProductList() {
+            const productListElement = document.getElementById('product-list');
+            const productsHtml = productList.map((product, index) => `
+                <div class="product">
+                    <span>${product.name} - $${product.price}</span>
+                    <button onclick="removeProduct(${index})">Remove</button>
+                </div>
+            `).join('');
+            productListElement.innerHTML = `<h2>Product Catalog</h2>` + productsHtml;
+        }
+    </script>
+</body>
+</html>

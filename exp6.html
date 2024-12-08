@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline Image Compressor</title>
+    <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@1.0.15/dist/browser-image-compression.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        input, button {
+            margin: 10px 0;
+        }
+        img {
+            margin-top: 20px;
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Offline Image Compressor</h1>
+    <input type="file" id="imageInput" accept="image/*">
+    <button onclick="compressImage()">Compress Image</button>
+    <p id="status"></p>
+    <h3>Original Image:</h3>
+    <img id="originalImage" alt="Original Image will appear here">
+    <h3>Compressed Image:</h3>
+    <img id="compressedImage" alt="Compressed Image will appear here">
+    
+    <script>
+        async function compressImage() {
+            const fileInput = document.getElementById('imageInput');
+            const status = document.getElementById('status');
+            const originalImage = document.getElementById('originalImage');
+            const compressedImage = document.getElementById('compressedImage');
+
+            if (!fileInput.files.length) {
+                status.textContent = "Please select an image to compress.";
+                return;
+            }
+
+            const file = fileInput.files[0];
+            originalImage.src = URL.createObjectURL(file);
+
+            const options = {
+                maxSizeMB: 1, // Set maximum size in MB
+                maxWidthOrHeight: 1024, // Set maximum width or height
+                useWebWorker: true // Use web workers for better performance
+            };
+
+            try {
+                status.textContent = "Compressing the image...";
+                const compressedFile = await imageCompression(file, options);
+
+                // Convert compressed file to blob URL
+                const compressedURL = URL.createObjectURL(compressedFile);
+                compressedImage.src = compressedURL;
+
+                // Display sizes
+                status.textContent = `Original Size: ${(file.size / 1024).toFixed(2)} KB | Compressed Size: ${(compressedFile.size / 1024).toFixed(2)} KB`;
+            } catch (error) {
+                status.textContent = "An error occurred while compressing the image.";
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+</html>
